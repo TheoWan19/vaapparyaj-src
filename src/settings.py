@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     #local apps
     'accounts',
     'core',
+    'invoice',
     #third parts apps
     'crispy_forms',
     'crispy_bootstrap5',

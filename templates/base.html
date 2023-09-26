@@ -64,6 +64,7 @@
                 <li class="active"><a href="" class="nav-link">Logout</a></li>
                 {% if user.is_superuser %}
                 <li class="active"><a href="{% url 'employee-register' %}" class="nav-link">Add Employee</a></li>
+                <li class="active"><a href="{% url 'employee' %}" class="nav-link">Employee</a></li>
                 {% endif %}
                 {% else %}
                 <li class="active"><a href="{% url 'customer-register' %}" class="nav-link">SignUp</a></li>

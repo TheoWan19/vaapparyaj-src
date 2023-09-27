@@ -11,6 +11,6 @@ class AdminInvoice(admin.ModelAdmin):
 admin.site.register(Invoice, AdminInvoice)
 admin.site.register(Article)
 
-admin.site.site_title = _("HOOYIA INVOICE SYSTEM")
-admin.site.site_header = _("HOOYIA INVOICE SYSTEM")
-admin.site.index_title = _("HOOYIA INVOICE SYSTEM")
+admin.site.site_title = _("VAAPPARYAJ INVOICE SYSTEM")
+admin.site.site_header = _("VAAPPARYAJ INVOICE SYSTEM")
+admin.site.index_title = _("VAAPPARYAJ INVOICE SYSTEM")

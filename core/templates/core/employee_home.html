@@ -1,19 +1,30 @@
-{% extends 'main/base.html' %}
-{% block title %}Register{% endblock %}
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Employee{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
-	<div class="container">
-		<div class="row">
-			<div class="col-3"></div>
-			<div class="col-6">
-				<h1>Home Employee</h1>
-				<div class="border-top pt-3">
-		            <small class="text-muted">
-		                <a class="ml-2" href="{% url 'add-invoice' %}">Add Invoice</a>
-		            </small><br><br>
-		        </div>
+	<div class="header">
+		<div class="side-nav">
+			<div class="user">
+				<img src="{% static 'images/user.png' %}" alt="" class="user-img">
+				<div>
+					<h2>Thomas Daniel</h2>
+					<p>thomasd@gmail.com</p>
+				</div>
+				<img src="{% static 'images/star.png' %}" alt="" class="star-img">
 			</div>
-			<div class="col-3"></div>
-		</div>
+			<ul>
+				<li><img src="{% static 'images/dashboard.png' %}"><p>Dashboard</p></li>
+				<li><img src="{% static 'images/reports.png' %}"><p>Reports</p></li>
+				<li><img src="{% static 'images/messages.png' %}"><p>Messages</p></li>
+				<li><img src="{% static 'images/projects.png' %}"><p>Our Projects</p></li>
+				<li><img src="{% static 'images/members.png' %}"><p>Core Members</p></li>
+				<li><img src="{% static 'images/settings.png' %}"><p>Settings</p></li>
+				<li><img src="{% static 'images/logout.png' %}"><p>Logout</p></li>
+			</ul>
+		</div>				
 	</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="/static/main.js/?{% now 'U' %}"></script>
 {% endblock %}

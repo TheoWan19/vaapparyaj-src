@@ -1,0 +1,52 @@
+{% extends 'main.html' %}
+{% block title %}Invoice Live{% endblock %}
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-4 text-center">
+				<form class="form-control mt-4" autocomplete="off" method="POST" id="search-form">
+					{% csrf_token %}
+					<input type="text" name="" id="search-input" class="p-3 w-100 h-10 search" placeholder="search">
+				</form><br>
+				<!-- result card -->
+				<div id="result-box" class="result-card not-visible"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-11 text-center">
+				<h4>Invoice Live</h4>
+
+				<form class="form-control mt-4" method="POST">
+					{% csrf_token %}
+					<table class="table">
+					  <thead>
+					    <tr>
+					      <th scope="col">No</th>
+					      <th scope="col">Country</th>
+					      <th scope="col">League</th>
+					      <th scope="col">Local Team</th>
+					      <th scope="col">Local Score</th>
+					      <th scope="col">Away Team</th>
+					      <th scope="col">Away Score</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					  	{% for i in data %}
+					    <tr>
+					      <th scope="row">{{ forloop.counter }}</th>
+					      <td>{{ i.league.country }}</td>
+					      <td>{{ i.league.name }}</td>
+					      <td><p><a href="{% url 'team' pk=i.teams.home.id %}" class="btn btn-primary">{{ i.teams.home.name }}</a></p></td>
+					      <td>{{ i.goals.home }}</td>
+					      <td><a href="{% url 'team' pk=i.teams.away.id %}" class="btn btn-primary">{{ i.teams.away.name }}</a></p></td>
+					      <td>{{ i.goals.away }}</td>
+					    </tr>
+					    {% endfor %}
+					  </tbody>
+					</table>
+				</form>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

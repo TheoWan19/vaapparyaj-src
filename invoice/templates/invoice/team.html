@@ -1,0 +1,27 @@
+{% extends 'main.html' %}
+{% block title %}Score Live{% endblock %}
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-1">1</div>
+			<div class="col-10 mt-4">
+				{% for i in responses %}
+				<div class="row justify-content">
+					<div class="col-4">
+						<div class="card" style="width: 18rem;">
+						  <img src="{{i.team.logo}}" class="card-img-top" alt="...">
+						  <div class="card-body">
+						    <h5 class="card-title">{{i.team.name}}</h5>
+						    <p class="card-text">{{i.team.country}}</p>
+						    <a href="" class="btn btn-primary">See</a>
+						  </div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			<div class="col-1">1</div>
+		</div>
+	</div>
+{% endblock %}
+{% block script %}{% endblock %}

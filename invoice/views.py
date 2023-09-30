@@ -1,12 +1,19 @@
 from django.shortcuts import render
 from django.views import View
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.template.loader import get_template
 from django.db import transaction
 from django.utils.translation import gettext as _
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import requests
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
+API_KEY = env('API_KEY')
 
 import pdfkit
 import datetime
@@ -255,3 +262,55 @@ def get_invoice_pdf(request, *args, **kwargs):
     response['Content-Disposition'] = "attachement"
 
     return response
+
+
+def invoice_live(request):
+
+    url = "https://api-football-beta.p.rapidapi.com/fixtures"
+
+    querystring = {"live":"all"}
+
+    headers = {
+        "X-RapidAPI-Key": API_KEY,
+        "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com"
+    }
+
+    response = requests.get(url, headers=headers, params=querystring)
+
+    #print(response.json())
+    data = response.json()
+
+    data = data['response']
+
+
+    return render(request, 'invoice/live.html', {'data': data})
+
+
+def team_details(request, pk):
+
+    API_KEY = env('API_KEY')
+    fixture = pk
+
+    url = "https://api-football-beta.p.rapidapi.com/teams"# fixtures live
+
+    querystring = {"id":fixture}
+
+    headers = {
+        "X-RapidAPI-Key": API_KEY,
+        "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com"
+    }
+
+    response = requests.get(url, headers=headers, params=querystring)
+
+    data = response.json()
+
+    responses = data['response']
+    return render(
+        request=request,
+        template_name='invoice/team.html',
+        context={'responses': responses}
+    )
+        
+
+
+

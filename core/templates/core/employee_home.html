@@ -16,9 +16,9 @@
 			<ul>
 				<li><img src="{% static 'images/dashboard.png' %}"><p>Dashboard</p></li>
 				<li><img src="{% static 'images/reports.png' %}"><p>Reports</p></li>
-				<li><img src="{% static 'images/messages.png' %}"><p>Messages</p></li>
-				<li><img src="{% static 'images/projects.png' %}"><p>Our Projects</p></li>
-				<li><img src="{% static 'images/members.png' %}"><p>Core Members</p></li>
+				<li><img src="{% static 'images/invoice.jpg' %}"><a href="{% url 'add-invoice' %}"><p>Invoice</p></a></li>
+				<li><img src="{% static 'images/home.png' %}"><a href="/"><p>Home</p></a></li>
+				<li><img src="{% static 'images/members.png' %}"><a href="{% url 'invoice-live' %}"><p>Invoice Live</p></a></li>
 				<li><img src="{% static 'images/settings.png' %}"><p>Settings</p></li>
 				<li><img src="{% static 'images/logout.png' %}"><p>Logout</p></li>
 			</ul>

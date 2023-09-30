@@ -49,11 +49,13 @@ INSTALLED_APPS = [
     'accounts',
     'core',
     'invoice',
+    'store',
     #third parts apps
     'crispy_forms',
     'crispy_bootstrap5',
     'import_export',
     'phonenumber_field',
+    'django_tables2',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -88,6 +90,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },

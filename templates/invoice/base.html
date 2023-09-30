@@ -63,7 +63,10 @@
             </a>
             <div class="dropdown-menu">
               <a class="dropdown-item" href="{% url 'add-client' %}">Add Client</a>
-              <a class="dropdown-item" href="#">add admin</a>
+              {% if user.is_superuser %}
+              <a class="dropdown-item" href="/admin/">Admin</a>
+              {% endif %}
+              <a class="dropdown-item" href="/">Home</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">statistic</a>
             </div>

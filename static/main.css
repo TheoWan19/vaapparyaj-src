@@ -236,6 +236,9 @@ ul li p {
 	justify-content: flex-start;
 }
 
+.side-nav:hover ul li a{
+	text-decoration: none;}
+
 
 
 

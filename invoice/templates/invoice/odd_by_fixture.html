@@ -1,0 +1,31 @@
+{% extends 'main.html' %}
+{% block title %}Score Live{% endblock %}
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12 mt-5 justify-content">
+				<table class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col">#</th>
+				      <th scope="col">Bookmakers</th>
+				      <th>Detail</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				  	{% for i in responses %}
+				  	{% for x in i.bookmakers %}
+				    <tr>
+				      <th scope="row">{{ forloop.counter }}</th>
+				      <td>{{ x.name }}</td>
+				      <td><p><a href="{% url 'odd-bet' pid=x.id pk=i.fixture.id %}">See</a></p></td>
+				    </tr>
+				    {% endfor %}
+				    {% endfor %}
+				  </tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block script %}{% endblock %}

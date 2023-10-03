@@ -311,6 +311,83 @@ def team_details(request, pk):
         context={'responses': responses}
     )
         
+def odd_by_fixture(request, pk):
+
+    API_KEY = env('API_KEY')
+    fixture = pk
+
+    url = "https://api-football-beta.p.rapidapi.com/odds"
+
+    querystring = {"fixture": fixture}
+
+    headers = {
+        "X-RapidAPI-Key": API_KEY,
+        "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com"
+    }
+
+    response = requests.get(url, headers=headers, params=querystring)
+
+    data = response.json()
+
+    responses = data['response']
+    #print(responses)
+    return render(
+        request=request,
+        template_name='invoice/odd_by_fixture.html',
+        context={'responses': responses}
+    )
 
 
+def odd_by_bets(request, pk, pid):
 
+    API_KEY = env('API_KEY')
+    bookmaker = pid
+    fixture = pk
+
+    url = "https://api-football-beta.p.rapidapi.com/odds"
+
+    querystring = {"bookmaker":bookmaker,"fixture":fixture}
+
+    headers = {
+        "X-RapidAPI-Key": API_KEY,
+        "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com"
+    }
+
+    response = requests.get(url, headers=headers, params=querystring)
+
+    data = response.json()
+    responses = data['response']
+
+    #print(responses)
+    return render(
+        request=request,
+        template_name='invoice/odd_by_bets.html',
+        context={'responses': responses}
+    )
+
+
+#def odd_complementary(request, pk):
+
+#   API_KEY = env('API_KEY')
+#    fixture = pk
+
+#    url = "https://api-football-beta.p.rapidapi.com/teams"# fixtures live
+
+#    querystring = {"id":fixture}
+
+#    headers = {
+#        "X-RapidAPI-Key": API_KEY,
+#        "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com"
+#    }
+
+#    response = requests.get(url, headers=headers, params=querystring)
+
+#    data = response.json()
+
+#    fixtures = data['response']
+#    print(fixtures)
+#    return render(
+#        request=request,
+#        template_name='invoice/odd_by_bets.html',
+#        context={'fixtures': fixtures}
+#    )

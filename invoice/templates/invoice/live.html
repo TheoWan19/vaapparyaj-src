@@ -28,6 +28,7 @@
 					      <th scope="col">Local Score</th>
 					      <th scope="col">Away Team</th>
 					      <th scope="col">Away Score</th>
+					      <th>Odds</th>
 					    </tr>
 					  </thead>
 					  <tbody>
@@ -40,6 +41,7 @@
 					      <td>{{ i.goals.home }}</td>
 					      <td><a href="{% url 'team' pk=i.teams.away.id %}" class="btn btn-primary">{{ i.teams.away.name }}</a></p></td>
 					      <td>{{ i.goals.away }}</td>
+					      <td><a href="{% url 'odd-fixture' pk=i.fixture.id %}" class="btn btn-primary">Go</a></p></td>
 					    </tr>
 					    {% endfor %}
 					  </tbody>

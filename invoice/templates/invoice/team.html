@@ -3,8 +3,8 @@
 {% block content %}
 	<div class="container">
 		<div class="row">
-			<div class="col-1">1</div>
-			<div class="col-10 mt-4">
+			<div class="col-1 mt-5"></div>
+			<div class="col-10 mt-5">
 				{% for i in responses %}
 				<div class="row justify-content">
 					<div class="col-4">
@@ -19,8 +19,14 @@
 					</div>
 				</div>
 				{% endfor %}
+				{% for x in responses %}
+				<div>
+					<div><p>{{ x.status.long }} Round: <p>{{ x.league.round }}</p></p></div>
+					<div><p>Season: <p>{{ x.league.season }}</p></p></div>
+				</div>
+				{% endfor %}
 			</div>
-			<div class="col-1">1</div>
+			<div class="col-1 mt-5"></div>
 		</div>
 	</div>
 {% endblock %}

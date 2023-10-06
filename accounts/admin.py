@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from . models import User, ClientUser
+from . models import User, ClientUser, Profile
 from . forms import UserCreationForm, UserChangeForm
 
 # Register your models here.
@@ -33,4 +33,5 @@ class AdminClientUser(admin.ModelAdmin):
 
 
 admin.site.register(User, UserAdmin)
-admin.site.register(ClientUser, AdminClientUser)		
+admin.site.register(ClientUser, AdminClientUser)
+admin.site.register(Profile)		

@@ -52,16 +52,13 @@
               <p>Setting & Privacy</p>
               <span>></span>
             </a>
-            <a href="" class="sub-menu-link">
-              <img src="{% static 'images/help.png' %}">
-              <p>Help & Support</p>
-              <span>></span>
-            </a>
-            <a href="" class="sub-menu-link">
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="sub-menu-link">
               <img src="{% static 'images/logout.png' %}">
               <p>Logout</p>
               <span>></span>
             </a>
+            {% endif %}
           </div>
         </div>
       </nav>

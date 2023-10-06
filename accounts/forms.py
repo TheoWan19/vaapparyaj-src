@@ -1,6 +1,6 @@
 from django import forms
-from django.contrib.auth.models import Group
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
+from django.contrib.auth.models import Group
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
@@ -32,7 +32,7 @@ class UserCreationForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = ('email', 'name', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'is_active','is_staff', 'is_superuser')
+		fields = ('email', 'name', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'is_active','is_staff', 'is_superuser', 'password1')
 
 		def clean_password2(self):
 			password1 = self.cleaned_data.get('password1')
@@ -43,7 +43,7 @@ class UserCreationForm(forms.ModelForm):
 			
 		def save(self, commit=True):
 			user = super().save(commit=False)
-			user.set_password(self.cleaned_data['password1'])
+			user.set_password(self.cleaned_data['password'])
 			if commit:
 				user.save()
 			return user
@@ -59,7 +59,7 @@ class UserChangeForm(forms.ModelForm):
 		return self.initial['password']	
 
 
-class CustomerSignUpForm(UserCreationForm):
+class CustomerSignUpForm(forms.ModelForm):
 
 	MALE = 'MALE'
 	FEMALE = 'FEMALE'
@@ -69,39 +69,27 @@ class CustomerSignUpForm(UserCreationForm):
 		(FEMALE, 'Female'),
 	)
 
-	email = forms.EmailField(widget=forms.EmailInput())
-	name = forms.CharField(widget=forms.TextInput())
-	phone = PhoneNumberField()
-	password1 = forms.CharField(label='Password', widget=forms.PasswordInput())
-	password2 = forms.CharField(label='Password Confirm', widget=forms.PasswordInput())
-
-	first_name = forms.CharField(widget=forms.TextInput())
-	last_name = forms.CharField(widget=forms.TextInput())
-	date_of_birth = forms.DateField()
-	gender = forms.ChoiceField(label='Gender', choices=GENDER_CHOICES)
-	location = forms.CharField(widget=forms.TextInput())
-		
-
+	password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+	password2 = forms.CharField(label='Password Confirmation', widget=forms.PasswordInput)
+	
 	class Meta:
 		model = User
-		fields = ['email', 'name', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'password1', 'password2']
+		fields = ('email', 'name', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'password1', 'password2')
 		widgets = {
 			'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
 			'phone': PhoneNumberPrefixWidget(initial='US'),
 		}
 
-	
 	def save(self, commit=True):
-		user = super(CustomerSignUpForm, self).save(commit=False)
-		user.email = self.cleaned_data['email']
+		user = super().save(commit=False)
+		user.set_password(self.cleaned_data['password1'])
 		user.is_customer = True
 		if commit:
 			user.save()
-
 		return user
 		
 
-class EmployeeSignUpForm(UserCreationForm):
+class EmployeeSignUpForm(forms.ModelForm):
 
 	MALE = 'MALE'
 	FEMALE = 'FEMALE'
@@ -111,33 +99,21 @@ class EmployeeSignUpForm(UserCreationForm):
 		(FEMALE, 'Female'),
 	)
 
-	email = forms.EmailField(widget=forms.EmailInput())
-	name = forms.CharField(widget=forms.TextInput())
-	phone = PhoneNumberField()
-	password1 = forms.CharField(label='Password', widget=forms.PasswordInput())
-	password2 = forms.CharField(label='Password Confirm', widget=forms.PasswordInput())
-
-	first_name = forms.CharField(widget=forms.TextInput())
-	last_name = forms.CharField(widget=forms.TextInput())
-	date_of_birth = forms.DateField()
-	gender = forms.ChoiceField(label='Gender', choices=GENDER_CHOICES)
-	location = forms.CharField(widget=forms.TextInput())
-		
-
+	password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+	password2 = forms.CharField(label='Password Confirmation', widget=forms.PasswordInput)
+	
 	class Meta:
 		model = User
-		fields = ['email', 'name', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'password1', 'password2']
+		fields = ('email', 'name', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'password1', 'password2')
 		widgets = {
 			'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
 			'phone': PhoneNumberPrefixWidget(initial='US'),
 		}
 
-	
 	def save(self, commit=True):
-		user = super(EmployeeSignUpForm, self).save(commit=False)
-		user.email = self.cleaned_data['email']
+		user = super().save(commit=False)
+		user.set_password(self.cleaned_data['password1'])
 		user.is_employee = True
 		if commit:
 			user.save()
-
-		return user		
+		return user

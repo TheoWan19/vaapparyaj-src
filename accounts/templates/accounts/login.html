@@ -1,6 +1,5 @@
 {% extends 'main.html' %}
-{% load static %}
-{% block title %}Register{% endblock %}
+{% block title %}Login{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
 	<div class="container">
@@ -10,23 +9,24 @@
 				<form method="POST">
 		            {% csrf_token %}
 		            <fieldset class="form-group">
-		                <legend class="border-bottom mb-4">Join Today</legend>
+		                <legend class="border-bottom mb-4  text-center">Login</legend>
 		                {{ form|crispy }}
 		            </fieldset>
-
-		            By registering, you accept the Terms of Service and Privacy Notice
-
 		            <div class="form-group">
-		                <button class="btn btn-outline-info" type="submit">Sign Up</button>
+		                <button class="btn btn-outline-info" type="submit">Login</button>
 		            </div>
 		        </form>
 		        <div class="border-top pt-3">
 		            <small class="text-muted">
-		                Already Have An Account? <a class="ml-2" href="">Sign In</a>
-		            </small><br><br>
+		                Need An Account? <a class="ml-2" href="{% url 'customer-register' %}">Sign Up Now</a>
+		            </small>
+		            <small class="text-muted">
+		                <a href="/">Forgot password?</a>
+		            </small>
 		        </div>
 			</div>
 			<div class="col-3"></div>
 		</div>
 	</div>
 {% endblock %}
+

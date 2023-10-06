@@ -44,3 +44,8 @@ def employee_register(request):
 def customer_home(request):
 	context = {}
 	return render(request, 'core/customer_home.html', context)		
+
+
+def profile(request):
+	context = {}
+	return render(request, 'accounts/profile.html', context)		

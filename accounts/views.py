@@ -18,6 +18,7 @@ from .models import User
 from .forms import CustomerSignUpForm, EmployeeSignUpForm, CustomAuthenticationForm, UpdateUserForm, UpdateProfileForm
 from .decorators import user_not_authenticated
 from .tokens import account_activation_token
+from invoice.decorators import * 
 
 # Create your views here.
 
@@ -52,7 +53,43 @@ def customer_register(request):
 				messages.error(request, error)
 	else:
 		form = CustomerSignUpForm()
-	return render(request=request, template_name='accounts/register.html', context={'form': form})	
+	return render(request=request, template_name='accounts/register.html', context={'form': form})
+
+
+@superuser_required
+@employee_required
+def employee_register(request):
+	if request.method == 'POST':
+		form = EmployeeSignUpForm(request.POST)
+		if form.is_valid():
+			user = form.save(commit=False)	
+			user.is_activate = False
+			user.save()
+
+			current_site = get_current_site(request)
+			mail_subject = 'Activate Your Vaapparyaj Account'
+			message = render_to_string('accounts/account_activation_email.html', {
+										'user': user,
+										'domain': current_site.domain,
+										'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+										'token': account_activation_token.make_token(user),
+			})
+			to_email = form.cleaned_data.get('email')
+
+			email = EmailMessage(
+				mail_subject, message, to=[to_email]
+			)
+
+			email.send()
+			messages.success(request, ('Please Confirm your email to complete registration.'))
+			return redirect('login')
+		else:
+			for error in list(form.errors.values()):
+				messages.error(request, error)
+	else:
+		form = EmployeeSignUpForm()
+	return render(request=request, template_name='accounts/register.html', context={'form': form})
+
 
 class ActivationAccount(View):
 
@@ -73,23 +110,6 @@ class ActivationAccount(View):
 			messages.warning(request, ('The confirmation link was invalid, possibly because it has already been used.'))
 			return redirect('home')
 
-
-@user_not_authenticated
-def employee_register(request):
-	if request.method == 'POST':
-		form = EmployeeSignUpForm(request.POST)
-		if form.is_valid():
-			user = form.save(commit=False)	
-			user.is_activate=False
-			user.save()
-			activationEmail(request, user, form.cleaned_data.get('email'))
-			return redirect('home')
-		else:
-			for error in list(form.errors.values()):
-				messages.error(request, error)
-	else:
-		form = EmployeeSignUpForm()
-	return render(request=request, template_name='accounts/register.html', context={'form': form})	
 
 @login_required
 def custom_logout(request):

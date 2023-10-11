@@ -16,6 +16,8 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
 
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LftiZEoAAAAAO7zEJ2pa4Bw5R_F9yuva72myaxO"></script>
+
     <!-- Jquery JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -32,6 +34,19 @@
 
     <!-- Prism JS -->
     <script src="{% static 'prism.js' %}"></script>
+
+    <script>
+        function onClick(e) {
+          e.preventDefault();
+          grecaptcha.enterprise.ready(async () => {
+            const token = await grecaptcha.enterprise.execute('6LftiZEoAAAAAO7zEJ2pa4Bw5R_F9yuva72myaxO', {action: 'LOGIN'});
+            // IMPORTANT: The 'token' that results from execute is an encrypted response sent by
+            // reCAPTCHA Enterprise to the end user's browser.
+            // This token must be validated by creating an assessment.
+            // See https://cloud.google.com/recaptcha-enterprise/docs/create-assessment
+          });
+        }
+    </script>
 
   </body>
 </html>

@@ -4,8 +4,6 @@ from django.contrib.auth.models import Group
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
 from django.forms.widgets import DateInput
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV2Checkbox
 
 
 from .models import User, Profile
@@ -132,8 +130,6 @@ class CustomAuthenticationForm(AuthenticationForm):
                                                                  'name': 'password',
                                                                  }))
     remember_me = forms.BooleanField(required=False)
-
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
     class Meta:
         model = User

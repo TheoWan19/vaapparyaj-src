@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'import_export',
     'phonenumber_field',
     'django_tables2',
+    'six',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -168,3 +169,13 @@ django_heroku.settings(locals())
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')

@@ -15,13 +15,13 @@ class UserAdmin(BaseUserAdmin):
 
 	fieldsets = (
 		(None, {'fields': ('email', 'is_staff', 'is_superuser', 'password')}),
-		('Personal info', {'fields': ('phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'is_customer','is_employee')}),
+		('Personal info', {'fields': ('phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'is_customer','is_employee', 'is_active')}),
 		('Groups', {'fields': ('groups',)}),
 		('Permissions', {'fields': ('user_permissions',)}),
 	)
 	add_fieldsets = (
 		(None, {'fields': ('email', 'is_staff', 'is_superuser', 'password1', 'password2')}),
-		('Personal info', {'fields': ('phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'is_customer', 'is_employee')}),
+		('Personal info', {'fields': ('phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'is_customer', 'is_employee', 'is_active')}),
 	)
 
 	search_fields = ('email', 'phone')

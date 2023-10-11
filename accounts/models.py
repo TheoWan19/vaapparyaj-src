@@ -38,7 +38,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 	is_staff = models.BooleanField(default=False)
 	is_customer = models.BooleanField(default=True)
 	is_employee = models.BooleanField(default=False)
-	is_active = models.BooleanField(default=True)
+	is_active = models.BooleanField(default=False)
 	date_joined = models.DateTimeField(default=timezone.now)
 	modified_at = models.DateTimeField(auto_now=True)
 	last_login = models.DateTimeField(null=True)

@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'invoice',
     'store',
     #third parts apps
+    'captcha',
     'crispy_forms',
     'crispy_bootstrap5',
     'import_export',
@@ -59,6 +60,16 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
+AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
+
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'login'
+
+RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 

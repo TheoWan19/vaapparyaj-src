@@ -8,8 +8,8 @@
 .hero {
 	width: 100%;
 	min-height: 100vh;
-	background: #eceaff;
-	color: #525252;
+	background: #FFFFE0;
+	color: #ffffff;
 }
 
 nav {
@@ -68,10 +68,13 @@ nav ul li a {
 .user-info {
 	display: flex;
 	align-items: center;
+
 }
 
 .user-info h3 {
-	font-weight: 500;
+	font-weight: 200;
+	font-size: 18px;
+	color: black;
 }
 
 .user-info img {

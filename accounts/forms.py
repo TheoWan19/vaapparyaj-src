@@ -1,20 +1,23 @@
 from django import forms
-from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, ReadOnlyPasswordHashField, AuthenticationForm
 from django.contrib.auth.models import Group
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
+from django.forms.widgets import DateInput
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
 
 
-from .models import User
+from .models import User, Profile
 
 class RegistrationForm(forms.ModelForm):
 	password = forms.CharField(label='Password', widget=forms.PasswordInput)
 	
 	class Meta:
 		model = User
-		fields = ('email', 'name', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'password')
+		fields = ('email', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'password')
 		widgets = {
-			'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+			'date_of_birth': DateInput(attrs={'type': 'date'}),
 			'phone': PhoneNumberPrefixWidget(initial='US'),
 		}
 
@@ -32,7 +35,7 @@ class UserCreationForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = ('email', 'name', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'is_active','is_staff', 'is_superuser', 'password1')
+		fields = ('email', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'is_active','is_staff', 'is_superuser', 'password1')
 
 		def clean_password2(self):
 			password1 = self.cleaned_data.get('password1')
@@ -53,7 +56,7 @@ class UserChangeForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = ('email', 'name', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'password', 'is_active', 'is_staff', 'is_superuser')	
+		fields = ('email', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'password', 'is_active', 'is_staff', 'is_superuser')	
 
 	def clean_password(self):
 		return self.initial['password']	
@@ -74,9 +77,9 @@ class CustomerSignUpForm(forms.ModelForm):
 	
 	class Meta:
 		model = User
-		fields = ('email', 'name', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'password1', 'password2')
+		fields = ('email', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'password1', 'password2')
 		widgets = {
-			'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+			'date_of_birth': DateInput(attrs={'type': 'date'}),
 			'phone': PhoneNumberPrefixWidget(initial='US'),
 		}
 
@@ -104,9 +107,9 @@ class EmployeeSignUpForm(forms.ModelForm):
 	
 	class Meta:
 		model = User
-		fields = ('email', 'name', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'password1', 'password2')
+		fields = ('email', 'phone', 'first_name', 'last_name', 'date_of_birth', 'gender', 'location', 'password1', 'password2')
 		widgets = {
-			'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+			'date_of_birth': DateInput(attrs={'type': 'date'}),
 			'phone': PhoneNumberPrefixWidget(initial='US'),
 		}
 
@@ -117,3 +120,46 @@ class EmployeeSignUpForm(forms.ModelForm):
 		if commit:
 			user.save()
 		return user
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    password = forms.CharField(max_length=50,
+                               required=True,
+                               widget=forms.PasswordInput(attrs={'placeholder': 'Password',
+                                                                 'class': 'form-control',
+                                                                 'data-toggle': 'password',
+                                                                 'id': 'password',
+                                                                 'name': 'password',
+                                                                 }))
+    remember_me = forms.BooleanField(required=False)
+
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+
+    class Meta:
+        model = User
+        fields = ['email', 'password', 'remember_me']
+
+class UpdateUserForm(forms.ModelForm):
+    email = forms.EmailField(required=True,
+                             widget=forms.TextInput(attrs={'class': 'form-control'}))
+    phone = PhoneNumberField()
+
+    class Meta:
+        model = User
+        fields = ['email', 'phone', 'date_of_birth']
+        widgets = {
+			'date_of_birth': DateInput(attrs={'type': 'date'}),
+			'phone': PhoneNumberPrefixWidget(initial='US'),
+		}
+
+
+class UpdateProfileForm(forms.ModelForm):
+    avatar = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
+    nif = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    cin = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    designation = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
+
+    class Meta:
+        model = Profile
+        fields = ['avatar', 'nif', 'cin', 'designation', 'bio']

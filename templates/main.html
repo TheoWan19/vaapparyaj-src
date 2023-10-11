@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %} | Vaapparyaj</title>
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     
      <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -29,21 +28,19 @@
           {% if user.is_superuser or user.is_employee %}
           <li><a href="{% url 'invoice-live' %}">Live</a></li>
           {% endif %}
-          <li><a href="">Blog</a></li>
-          <li><a href="">Contact</a></li>
         </ul>
-        <img src="{% static 'images/user.png' %}" class="user-pic" onclick="toggleMenu()">
+        <img src="{{ user.profile.avatar.url }}" class="user-pic" onclick="toggleMenu()">
 
         <div class="sub-menu-wrap" id="subMenu">
           <div class="sub-menu">
             <div class="user-info">
-              <img src="{% static 'images/user.png' %}" alt="">
-              <h3>James Adrin</h3>
+              <img src="{{ user.profile.avatar.url }}" alt="">
+              <h3>{{ user.email }}</h3>
             </div>
             <hr>
 
-            <a href="" class="sub-menu-link">
-              <img src="{% static 'images/profile.png' %}">
+            <a href="{% url 'profile' %}" class="sub-menu-link">
+              <img src="{{ user.profile.avatar.url }}">
               <p>Edit Profile</p>
               <span>></span>
             </a>
@@ -63,7 +60,7 @@
         </div>
       </nav>
 
-      <div>
+      <div style="color: black;">
         {% block content %}{% endblock %}
       </div>
       

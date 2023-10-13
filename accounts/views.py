@@ -15,10 +15,13 @@ from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 
 from .models import User
+from codes.models import Code
 from .forms import CustomerSignUpForm, EmployeeSignUpForm, CustomAuthenticationForm, UpdateUserForm, UpdateProfileForm
 from .decorators import user_not_authenticated
 from .tokens import account_activation_token
 from invoice.decorators import * 
+from codes.forms import CodeForm
+from . utils import send_sms
 
 # Create your views here.
 
@@ -118,20 +121,59 @@ def custom_logout(request):
     return redirect("home")
 
 
-class CustomLoginView(LoginView):
-    form_class = CustomAuthenticationForm
+#class CustomLoginView(LoginView):
+#    form_class = CustomAuthenticationForm
+#
+#    def form_valid(self, form):
+#        remember_me = form.cleaned_data.get('remember_me')
+#
+#        if not remember_me:
+#            # set session expiry to 0 seconds. So it will automatically close the session after the browser is closed.
+#            self.request.session.set_expiry(0)
+#
+#            # Set session as modified to force data updates/cookie to be saved.
+#            self.request.session.modified = True
+#        	# else browser session will be as long as the session cookie time "SESSION_COOKIE_AGE" defined in settings.py	
+#        return super(CustomLoginView, self).form_valid(form)
 
-    def form_valid(self, form):
-        remember_me = form.cleaned_data.get('remember_me')
+def login_view(request):
+	error_message = None
+	if request.method == 'POST':
+		email = request.POST['email']
+		print(email)
+		password = request.POST['password']
+		print(password)
+		user = authenticate(request, email=email, password=password)
+		print(user)
+		if user is not None:
+			request.session['pk'] = user.pk
+			return redirect('verify')
+		else:
+			error_message = 'Invalid email or password'	
+	return render(request, 'accounts/login.html', {'error_message': error_message})			
 
-        if not remember_me:
-            # set session expiry to 0 seconds. So it will automatically close the session after the browser is closed.
-            self.request.session.set_expiry(0)
 
-            # Set session as modified to force data updates/cookie to be saved.
-            self.request.session.modified = True
-        	# else browser session will be as long as the session cookie time "SESSION_COOKIE_AGE" defined in settings.py	
-        return super(CustomLoginView, self).form_valid(form)
+def verify_view(request):
+	form = CodeForm(request.POST or None)
+	pk = request.session.get('pk')
+	if pk:
+		user = User.objects.get(pk=pk)
+		code = Code.objects.all().first()
+		print(code)
+		code_user = f'{user.email}: {code}'
+		if not request.POST:
+			print(code_user)
+			send_sms(code, user.phone)
+		if form.is_valid():
+			num = form.cleaned_data.get('number')	
+
+			if str(code) == num:
+				code.save()
+				login(request, user)
+				return redirect('home')
+			else:
+				return redirect('login')	
+	return render(request, 'accounts/verify.html', {'form': form})					
 
 
 def customer_home(request):
